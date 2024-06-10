@@ -1,8 +1,6 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/components/Providers/ReactQueryProvider";
-
-const inter = Inter({ subsets: ["latin"] });
+import NavBar from "@/components/Nav/NavBar";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,7 +9,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html>
+      <NavBar />
       <body className="bg-white">
         <div className="container">
           <ReactQueryProvider>{children}</ReactQueryProvider>
