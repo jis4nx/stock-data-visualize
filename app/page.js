@@ -14,7 +14,7 @@ export default async function Page() {
   const data = await getData();
 
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto">
       <StockPaginatedItems items={data} itemsPerPage={10} />
     </div>
   );
