@@ -26,8 +26,30 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.pagination-container {
+  display: flex;
+  margin-top: 1rem;
+  margin: 0 20px;
+}
+
+.page-item {
+  padding: 0px 10px;
+  color: #1c4c96;
+}
+
+.page-item + .page-item {
+  padding-left: 30px;
+}
+.page-item:hover {
+  background-color: rgb(228 228 231);
+}
+
+.item-active {
+  color: white;
+  background-color: #1c4c96;
+}
+
+.vertical-line {
+  border: 1px solid #1c4c96;
+  height: calc(100vh-5rem);
 }
