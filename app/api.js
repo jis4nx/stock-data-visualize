@@ -15,8 +15,9 @@ export const createStockData = async (stock) => {
   return response.data;
 };
 
-export const updateStockData = async (id, stock) => {
-  const response = await stockAPI.put(`stockdata/${id}/`, stock);
+export const updateStockData = async (stock) => {
+  console.log(stock);
+  const response = await stockAPI.put(`stockdata/${stock.id}/`, stock);
   return response.data;
 };
 

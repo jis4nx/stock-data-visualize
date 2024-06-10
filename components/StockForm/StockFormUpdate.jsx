@@ -30,7 +30,7 @@ export default function StockFormUpdate({ data }) {
   };
 
   const handleSubmit = async (values, { resetForm }) => {
-    await updateMutation.mutateAsync(values.id, values);
+    await updateMutation.mutateAsync(values);
   };
 
   return (
@@ -44,7 +44,7 @@ export default function StockFormUpdate({ data }) {
           unmount: { y: 100 },
         }}
       >
-        Stock {create ? "Added" : "Saved"}
+        Saved
       </Alert>
       <Card
         color="transparent"

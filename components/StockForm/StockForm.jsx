@@ -4,13 +4,11 @@ import {
   Typography,
   Input,
   Button,
-  Spinner,
   Alert,
 } from "@material-tailwind/react";
 import { createStockData, updateStockData } from "@/app/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { useState } from "react";
 import { validationSchema } from "@/utils/validation";
 
@@ -52,7 +50,7 @@ export default function StockForm() {
           unmount: { y: 100 },
         }}
       >
-        Stock {create ? "Added" : "Saved"}
+        Stock Added
       </Alert>
       <Card
         color="transparent"
@@ -60,7 +58,7 @@ export default function StockForm() {
         className="mt-4 flex items-center"
       >
         <Typography variant="h4" color="blue-gray">
-          {create ? "Create Stock" : "Update Stock"}
+          Create Stock
         </Typography>
         <Formik
           initialValues={initialValues}

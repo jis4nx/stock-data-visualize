@@ -1,14 +1,12 @@
 import React from "react";
 import { Dialog, DialogBody, DialogHeader } from "@material-tailwind/react";
-import ProductForm from "./ProductForm";
 import StockFormUpdate from "./StockFormUpdate";
 
-function ProductChangeModal({ open, setOpen, data }) {
+function StockDataUpdateModal({ open, setOpen, data }) {
   const handleOpen = () => setOpen(!open);
   return (
     <div>
       <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Change Product</DialogHeader>
         <DialogBody>
           <StockFormUpdate data={data} />
         </DialogBody>
@@ -17,4 +15,4 @@ function ProductChangeModal({ open, setOpen, data }) {
   );
 }
 
-export default ProductChangeModal;
+export default StockDataUpdateModal;
