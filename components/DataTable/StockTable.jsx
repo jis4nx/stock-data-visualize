@@ -1,7 +1,9 @@
 "use client";
-import { Card, Typography } from "@material-tailwind/react";
+import { Alert, Card, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import StockDataUpdateModal from "../StockForm/StockDataModal";
+import { deleteStockData } from "@/app/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const TABLE_HEAD = [
   "Date",
@@ -12,13 +14,41 @@ const TABLE_HEAD = [
   "Close",
   "Volume",
   " ",
+  " ",
 ];
 
 export default function StockTable({ stockData, offset }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentStock, setCurrentStock] = useState({});
+  const [deleted, setIsDeleted] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const deleteMuatation = useMutation({
+    mutationFn: deleteStockData,
+    onSuccess: () => {
+      setIsDeleted(true);
+      queryClient.invalidateQueries(["stockData"]);
+    },
+  });
+
+  const handleDeleteStock = async (id) => {
+    await deleteMuatation.mutateAsync(id);
+  };
+
   return (
     <>
+      <Alert
+        className="mb-1 bg-red-600"
+        open={deleted}
+        onClose={() => setIsDeleted(false)}
+        animate={{
+          mount: { y: 0 },
+          unmount: { y: 100 },
+        }}
+      >
+        Stock Deleted
+      </Alert>
       {modalOpen ? (
         <StockDataUpdateModal
           open={modalOpen}
@@ -130,7 +160,7 @@ export default function StockTable({ stockData, offset }) {
                       <Typography
                         variant="small"
                         color="blue"
-                        className="font-normal cursor-pointer"
+                        className="cursor-pointer font-semibold"
                         onClick={() => {
                           setCurrentStock({
                             id: id,
@@ -145,7 +175,17 @@ export default function StockTable({ stockData, offset }) {
                           setModalOpen(true);
                         }}
                       >
-                        Edit
+                        EDIT
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography
+                        color="red"
+                        variant="small"
+                        className="cursor-pointer font-semibold"
+                        onClick={() => handleDeleteStock(id)}
+                      >
+                        DELETE
                       </Typography>
                     </td>
                   </tr>

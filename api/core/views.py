@@ -18,6 +18,10 @@ class Home(APIView):
 
 class StockDataViewSet(ModelViewSet):
     # Sorting By date in descending order
+    filterset_fields = {
+        "trade_code": ["iexact"],
+        "date": ["exact"],
+    }
     queryset = StockData.objects.all().order_by("-date")
     serializer_class = StockDataSerializer
 

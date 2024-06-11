@@ -5,11 +5,12 @@ export const stockAPI = axios.create({
   withCredentials: true,
 });
 
-export const getStockData = async (offset, limit) => {
+export const getStockData = async (offset, limit = 10, tradeCode) => {
   const response = await stockAPI.get("/stockdata/", {
     params: {
       limit: limit,
       offset: offset,
+      trade_code__iexact: tradeCode,
     },
   });
   return response.data;
@@ -39,6 +40,7 @@ export const updateStockData = async (stock) => {
 };
 
 export const deleteStockData = async (id) => {
+  console.log(id)
   const response = await stockAPI.delete(`stockdata/${id}/`);
   return response.data;
 };

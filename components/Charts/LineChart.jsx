@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useQuery } from "@tanstack/react-query";
 import { getStockDataPage } from "@/app/api";
 import TradeCode from "../Dropdown/TradeCode";
+import Loader from "../Loader/Loader";
+
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 function StockLineGraph() {
@@ -17,11 +19,6 @@ function StockLineGraph() {
     queryKey: ["stockDataGraph", size, year, month, tradeCode],
     queryFn: () => getStockDataPage(size, year, month, tradeCode),
   });
-
-
-  useEffect(() => {
-    console.log(tradeCode)
-  },[tradeCode])
 
   const handleTradeCodeChange = (tradeCode) => {
     setTradeCode(tradeCode);
@@ -54,7 +51,7 @@ function StockLineGraph() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (isError) {
