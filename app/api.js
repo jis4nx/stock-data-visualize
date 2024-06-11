@@ -5,8 +5,24 @@ export const stockAPI = axios.create({
   withCredentials: true,
 });
 
-export const getStockData = async (offset) => {
-  const response = await stockAPI.get(`/stockdata/?offset=${offset}`);
+export const getStockData = async (offset, limit) => {
+  const response = await stockAPI.get("/stockdata/", {
+    params: {
+      limit: limit,
+      offset: offset,
+    },
+  });
+  return response.data;
+};
+
+export const getStockDataPage = async (size, year, month) => {
+  const response = await stockAPI.get("/stocklist/", {
+    params: {
+      size: size,
+      year: year || null,
+      month: month || null,
+    },
+  });
   return response.data;
 };
 
