@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://janata-exercise-production.up.railway.app",
-    "https://janata-wifi.up.railway.app/",
+    "https://janata-wifi.up.railway.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
