@@ -158,3 +158,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*railway.app",
+    "https://janata-exercise-production.up.railway.app",
+]
