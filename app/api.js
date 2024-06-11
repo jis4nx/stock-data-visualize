@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const stockAPI = axios.create({
-  baseURL: process.env.BASE_URL || "http://0.0.0.0:8000/api",
+  baseURL: process.env.BASE_URL || "https://localhost:8000/api",
   withCredentials: true,
 });
 

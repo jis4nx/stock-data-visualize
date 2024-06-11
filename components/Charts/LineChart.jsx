@@ -59,7 +59,7 @@ function StockLineGraph() {
   }
 
   return (
-    data.results && (
+    data?.results && (
       <div className="p-3">
         <TradeCode onTradeCodeChange={handleTradeCodeChange} />
         <Typography variant="lead" className="text-center m-4">
