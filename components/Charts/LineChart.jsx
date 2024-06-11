@@ -128,7 +128,7 @@ function StockLineGraph() {
           </Button>
         </div>
         <Chart
-          type="area"
+          type="line"
           height={350}
           width="100%"
           series={[
