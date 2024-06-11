@@ -1,20 +1,31 @@
 "use client";
-import { Button } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useQuery } from "@tanstack/react-query";
 import { getStockDataPage } from "@/app/api";
+import TradeCode from "../Dropdown/TradeCode";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 function StockLineGraph() {
   const [size, setSize] = useState(50);
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
+  const [tradeCode, setTradeCode] = useState();
 
   const { isError, data, error, isLoading, refetch } = useQuery({
-    queryKey: ["stockDataGraph", size, year, month],
-    queryFn: () => getStockDataPage(size, year, month),
+    queryKey: ["stockDataGraph", size, year, month, tradeCode],
+    queryFn: () => getStockDataPage(size, year, month, tradeCode),
   });
+
+
+  useEffect(() => {
+    console.log(tradeCode)
+  },[tradeCode])
+
+  const handleTradeCodeChange = (tradeCode) => {
+    setTradeCode(tradeCode);
+  };
 
   const handleZoom = async (event, chartContext) => {
     const { xaxis } = chartContext;
@@ -39,7 +50,6 @@ function StockLineGraph() {
   };
 
   const handlePan = async (event, chartContext) => {
-    // Logic to handle panning, e.g., refetching data for new date range
     await refetch();
   };
 
@@ -54,6 +64,10 @@ function StockLineGraph() {
   return (
     data.results && (
       <div className="p-3">
+        <TradeCode onTradeCodeChange={handleTradeCodeChange} />
+        <Typography variant="lead" className="text-center m-4">
+          Stock Market Analytics
+        </Typography>
         <div className="flex gap-3 items-center justify-center">
           <Button
             variant="filled"
@@ -122,8 +136,14 @@ function StockLineGraph() {
           width="100%"
           series={[
             {
-              name: "Close",
-              data: data.results.map((item) => item.close),
+              name: "Average Close",
+              type: "line",
+              data: data.results.map((item) => item.avg_close),
+            },
+            {
+              name: "Total Volume",
+              type: "column",
+              data: data.results.map((item) => item.total_volume),
             },
           ]}
           options={{
@@ -136,7 +156,7 @@ function StockLineGraph() {
                 stops: [0, 100],
               },
             },
-            colors: ["#1c4c96"],
+            colors: ["#1c4c96", "black"],
             xaxis: {
               title: { text: "Dates" },
               categories: data.results.map((item) =>
@@ -146,10 +166,24 @@ function StockLineGraph() {
                 }),
               ),
             },
-            yaxis: {
-              title: { text: "Close" },
-            },
+            yaxis: [
+              {
+                title: {
+                  text: "Close",
+                },
+              },
+              {
+                opposite: true,
+                title: {
+                  text: "Volume",
+                },
+              },
+            ],
             chart: {
+              type: "line",
+              stroke: {
+                width: [0, 4],
+              },
               zoom: {
                 type: "x",
                 enabled: true,

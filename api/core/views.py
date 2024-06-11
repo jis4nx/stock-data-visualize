@@ -1,3 +1,4 @@
+from django.db.models import Avg, Sum
 from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -6,7 +7,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from .models import StockData
-from .serializers import StockDataSerializer
+from .serializers import DailyStockDataSerializer, StockDataSerializer
 from .pagination import StandardResultsSetPagination
 
 
@@ -22,13 +23,14 @@ class StockDataViewSet(ModelViewSet):
 
 
 class ListStockDataPage(ListAPIView):
-    serializer_class = StockDataSerializer
+    serializer_class = DailyStockDataSerializer
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        queryset = StockData.objects.all().order_by("-date")
+        queryset = StockData.objects.all()
         years = self.request.query_params.get("year", None)
         months = self.request.query_params.get("month", None)
+        trade_code = self.request.query_params.get("trade_code", None)
 
         if years:
             try:
@@ -46,4 +48,19 @@ class ListStockDataPage(ListAPIView):
             except ValueError:
                 pass
 
+        if trade_code:
+            queryset = queryset.filter(trade_code=trade_code)
+        # Annotate the queryset to calculate average close and total volume for each unique date
+        queryset = queryset.values("date").annotate(
+            avg_close=Avg("close"), total_volume=Sum("volume")
+        )
+
         return queryset
+
+
+class TradeCodeListView(APIView):
+    def get(self, request, format=None):
+        trade_codes = StockData.objects.values_list("trade_code", flat=True).distinct()
+
+        trade_codes_list = list(trade_codes)
+        return Response(trade_codes_list)

@@ -15,12 +15,13 @@ export const getStockData = async (offset, limit) => {
   return response.data;
 };
 
-export const getStockDataPage = async (size, year, month) => {
+export const getStockDataPage = async (size, year, month, tradeCode) => {
   const response = await stockAPI.get("/stocklist/", {
     params: {
       size: size,
       year: year || null,
       month: month || null,
+      trade_code: tradeCode || null,
     },
   });
   return response.data;
@@ -39,5 +40,9 @@ export const updateStockData = async (stock) => {
 
 export const deleteStockData = async (id) => {
   const response = await stockAPI.delete(`stockdata/${id}/`);
+  return response.data;
+};
+export const getTradeCodes = async () => {
+  const response = await stockAPI.get(`/tradecodes/`);
   return response.data;
 };

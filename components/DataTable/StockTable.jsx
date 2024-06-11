@@ -27,6 +27,9 @@ export default function StockTable({ stockData, offset }) {
         />
       ) : null}
       <Card className="overflow-scroll">
+        <Typography className="text-center p-4" variant="lead" color="indigo">
+          Stock Market Data
+        </Typography>
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
