@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-8-*wo#^1$*^^=4o$qqikm(ud-jf)k%h@_8-sev!7p#zc#3_z8d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -139,6 +139,7 @@ REST_FRAMEWORK = {
 # Cors Settings
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
+    "https://janata-exercise-production.up.railway.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
