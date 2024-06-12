@@ -26,7 +26,7 @@ export default function StockForm() {
   });
 
   const initialValues = {
-    date: "",
+    date: new Date().toLocaleDateString("en-CA"),
     trade_code: "",
     high: "",
     low: "",
