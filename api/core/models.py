@@ -1,5 +1,7 @@
 from django.db import models
 
+from .managers import StockDataManager
+
 
 class StockData(models.Model):
     date = models.DateField(null=True, blank=True)
@@ -9,6 +11,8 @@ class StockData(models.Model):
     open = models.DecimalField(max_digits=10, decimal_places=2)
     close = models.DecimalField(max_digits=10, decimal_places=2)
     volume = models.PositiveIntegerField()
+
+    objects = StockDataManager()
 
     def __str__(self):
         return f"{self.trade_code} on {self.date}"

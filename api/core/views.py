@@ -27,39 +27,59 @@ class StockDataViewSet(ModelViewSet):
 
 
 class ListStockDataPage(ListAPIView):
-    serializer_class = DailyStockDataSerializer
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = StockData.objects.all()
-        years = self.request.query_params.get("year", None)
-        months = self.request.query_params.get("month", None)
-        trade_code = self.request.query_params.get("trade_code", None)
+        queryset = self.filter_by_trade_code(queryset)
+        queryset = self.filter_by_year(queryset)
+        queryset = self.filter_by_month(queryset)
+        queryset = self.filter_unique(queryset)
+        return queryset
 
+    def filter_by_trade_code(self, queryset):
+        trade_code = self.request.query_params.get("trade_code")
+        if trade_code:
+            queryset = queryset.filter(trade_code=trade_code)
+        return queryset
+
+    def filter_by_year(self, queryset):
+        years = self.request.query_params.get("year")
         if years:
             try:
                 years = int(years)
-                date_threshold = datetime.now() - timedelta(days=365 * years)
+                date_threshold = timezone.now() - timedelta(days=365 * years)
                 queryset = queryset.filter(date__gte=date_threshold)
             except ValueError:
                 pass
+        return queryset
 
+    def filter_by_month(self, queryset):
+        months = self.request.query_params.get("month")
         if months:
             try:
                 months = int(months)
-                date_threshold = datetime.now() - timedelta(days=30 * months)
+                date_threshold = timezone.now() - timedelta(days=30 * months)
                 queryset = queryset.filter(date__gte=date_threshold)
             except ValueError:
                 pass
-
-        if trade_code:
-            queryset = queryset.filter(trade_code=trade_code)
-        # Annotate the queryset to calculate average close and total volume for each unique date
-        queryset = queryset.values("date").annotate(
-            avg_close=Avg("close"), total_volume=Sum("volume")
-        )
-
         return queryset
+
+    def filter_unique(self, queryset):
+        unique = self.request.query_params.get("unique")
+        if unique and unique.lower() == "true":
+            queryset = queryset.get_stocks_unique_date()
+        else:
+            queryset = queryset.values("date").annotate(
+                avg_close=Avg("close"), total_volume=Sum("volume")
+            )
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.query_params.get("unique", "").lower() == "true":
+            return StockDataSerializer
+        else:
+            return DailyStockDataSerializer
 
 
 class TradeCodeListView(APIView):
