@@ -10,21 +10,32 @@ export const getStockData = async (offset, limit = 10, tradeCode) => {
     params: {
       limit: limit,
       offset: offset,
-      trade_code__iexact: tradeCode,
+      trade_code__iexact: tradeCode || null,
     },
   });
   return response.data;
 };
 
-export const getStockDataPage = async (size, year, month, tradeCode) => {
-  const response = await stockAPI.get("/stocklist/", {
-    params: {
-      size: size,
-      year: year || null,
-      month: month || null,
-      trade_code: tradeCode || null,
-    },
-  });
+export const getStockDataPage = async (
+  size,
+  year,
+  month,
+  tradeCode,
+  unique,
+) => {
+  const params = {
+    size: size,
+    year: year || null,
+    month: month || null,
+    trade_code: tradeCode || null,
+  };
+
+  // Only include the unique parameter if it has a value
+  if (unique !== undefined && unique !== null) {
+    params.unique = unique;
+  }
+
+  const response = await stockAPI.get("/stocklist/", { params });
   return response.data;
 };
 
@@ -40,7 +51,7 @@ export const updateStockData = async (stock) => {
 };
 
 export const deleteStockData = async (id) => {
-  console.log(id)
+  console.log(id);
   const response = await stockAPI.delete(`stockdata/${id}/`);
   return response.data;
 };

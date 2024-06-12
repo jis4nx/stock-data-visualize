@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "runstart":"npm run build && npm run start",
-    "start-with-python": "concurrently \"npm run runstart\" \"npm run django\"",
+    "start-with-python": "concurrently \"npm run dev\" \"npm run django\"",
     "lint": "next lint"
   },
   "dependencies": {

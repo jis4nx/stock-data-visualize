@@ -17,7 +17,7 @@ function StockLineGraph() {
 
   const { isError, data, error, isLoading, refetch } = useQuery({
     queryKey: ["stockDataGraph", size, year, month, tradeCode],
-    queryFn: () => getStockDataPage(size, year, month, tradeCode),
+    queryFn: () => getStockDataPage(size, year, month, tradeCode, undefined),
   });
 
   const handleTradeCodeChange = (tradeCode) => {
@@ -147,7 +147,6 @@ function StockLineGraph() {
             fill: {
               type: "gradient",
               gradient: {
-                shadeIntensity: 1,
                 opacityFrom: 0.7,
                 opacityTo: 0.9,
                 stops: [0, 100],
@@ -178,9 +177,6 @@ function StockLineGraph() {
             ],
             chart: {
               type: "line",
-              stroke: {
-                width: [0, 4],
-              },
               zoom: {
                 type: "x",
                 enabled: true,
