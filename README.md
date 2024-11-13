@@ -15,4 +15,3 @@ python api/manage.py load_stock_data <your-csv-file.csv>
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 <br>
 <br>
-[Live Link](https://janata-wifi.up.railway.app/)
